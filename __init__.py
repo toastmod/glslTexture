@@ -35,7 +35,7 @@ class GlslTexture(bpy.types.Operator):
     bl_label = 'GlslTexture'
     bl_options = { 'REGISTER', 'UNDO' }
     
-    self.vertex_default = '''
+    vertex_default = '''
 in vec2 a_position;
 in vec2 a_texcoord;
 
@@ -44,7 +44,7 @@ void main() {
 }
 '''
 
-    self.default_code = '''
+    default_code = '''
 uniform vec2    u_resolution;
 uniform float   u_time;
 
