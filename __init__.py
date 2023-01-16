@@ -35,6 +35,30 @@ class GlslTexture(bpy.types.Operator):
     bl_label = 'GlslTexture'
     bl_options = { 'REGISTER', 'UNDO' }
     
+    self.vertex_default = '''
+in vec2 a_position;
+in vec2 a_texcoord;
+
+void main() {
+    gl_Position = vec4(a_position, 0.0, 1.0);
+}
+'''
+
+    self.default_code = '''
+uniform vec2    u_resolution;
+uniform float   u_time;
+
+void main() {
+    vec3 color = vec3(0.0); 
+    vec2 st = gl_FragCoord.xy / u_resolution;
+    
+    color.rg = st;
+    color.b = abs(sin(u_time));
+
+    gl_FragColor = vec4(color, 1.0);
+}
+'''
+
     width: bpy.props.IntProperty(
         name = 'width',
         description = 'Texture width',
@@ -72,29 +96,7 @@ class GlslTexture(bpy.types.Operator):
     
     def invoke(self, context, event):
         
-        self.vertex_default = '''
-in vec2 a_position;
-in vec2 a_texcoord;
 
-void main() {
-    gl_Position = vec4(a_position, 0.0, 1.0);
-}
-'''
-
-        self.default_code = '''
-uniform vec2    u_resolution;
-uniform float   u_time;
-
-void main() {
-    vec3 color = vec3(0.0); 
-    vec2 st = gl_FragCoord.xy / u_resolution;
-    
-    color.rg = st;
-    color.b = abs(sin(u_time));
-
-    gl_FragColor = vec4(color, 1.0);
-}
-'''
 
         self.current_code = ""
         self.current_time = 0.0
